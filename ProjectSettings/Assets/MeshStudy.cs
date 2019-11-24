@@ -43,7 +43,7 @@ public class MeshStudy : MonoBehaviour
     MeshFilter oMeshFilter;
     int[] triangles;
 
-    [HideInInspector]
+    //[HideInInspector]
     public Vector3[] vertices;
 
     [HideInInspector]
