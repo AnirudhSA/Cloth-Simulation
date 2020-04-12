@@ -26,4 +26,15 @@ bpy.ops.object.modifier_add(type='CLOTH')
 #bpy.context.space_data.context = 'PHYSICS'
 bpy.ops.object.mode_set(mode='OBJECT')
 bpy.ops.ptcache.bake_all(bake=True)
+
+depsgraph = bpy.context.evaluated_depsgraph_get()
+obj = bpy.data.objects['plane']
+
+bm = bmesh.new()
+
+bm.from_object( obj, depsgraph )
+outfile = open("simulation_data.csv","w")
+for v in bm.verts:
+    outfile.write( str(v.co) )
+bm.free()
        
