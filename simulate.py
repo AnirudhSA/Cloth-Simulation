@@ -35,6 +35,7 @@ bm = bmesh.new()
 bm.from_object( obj, depsgraph )
 outfile = open("simulation_data.csv","w")
 for v in bm.verts:
-    outfile.write( str(v.co) )
+    outfile.write( str(v.co.x) + "," + str(v.co.y) + "," + str(v.co.z)+ "," )
+    outfile.write("\n")
 bm.free()
        
