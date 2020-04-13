@@ -6,7 +6,7 @@ pos = random.randint(0,5)
 bpy.ops.mesh.primitive_uv_sphere_add(radius=1, enter_editmode=False, location=(pos, pos, pos))
 bpy.ops.object.modifier_add(type='COLLISION')
 
-bpy.ops.mesh.primitive_plane_add(size=4, enter_editmode=False, location=(pos, pos, pos+2))
+bpy.ops.mesh.primitive_plane_add(size=4, enter_editmode=False, location=(pos, pos, pos+1.05))
 bpy.context.active_object.name = 'plane'
 
 cloth = bpy.context.scene.objects["plane"]
@@ -32,10 +32,13 @@ obj = bpy.data.objects['plane']
 
 bm = bmesh.new()
 
-bm.from_object( obj, depsgraph )
 outfile = open("simulation_data.csv","w")
-for v in bm.verts:
-    outfile.write( str(v.co.x) + "," + str(v.co.y) + "," + str(v.co.z)+ "," )
+for i in range(1,45):
+    bpy.context.scene.frame_set(i)
+    bm.from_object( obj, depsgraph )
+    for v in bm.verts:
+        outfile.write( str(v.co.x) + "," + str(v.co.y) + "," + str(v.co.z)+ "," )
+        outfile.write("\n")
     outfile.write("\n")
 bm.free()
        
