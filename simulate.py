@@ -8,7 +8,7 @@ pos_z = random.randint(0,5)
 bpy.ops.mesh.primitive_uv_sphere_add(radius=1, enter_editmode=False, location=(pos_x, pos_y, pos_z))
 bpy.ops.object.modifier_add(type='COLLISION')
 
-bpy.ops.mesh.primitive_plane_add(size=4, enter_editmode=False, location=(pos_y, pos_x, pos_z+1.05))
+bpy.ops.mesh.primitive_plane_add(size=4, enter_editmode=False, location=(pos_x, pos_y, pos_z+1.05))
 bpy.context.active_object.name = 'plane'
 
 cloth = bpy.context.scene.objects["plane"]
@@ -41,21 +41,22 @@ print(obj.matrix_world[0][3])
 print(obj.matrix_world[1][3])
 print(obj.matrix_world[2][3])
 random_frame = random.randint(1,40)
-bpy.context.scene.frame_set(random_frame)
+
+outfile.write("Vertex , x , y , z \n")
 for i in range(random_frame,random_frame+20):
     bm = bmesh.new()
-    
+    bpy.context.scene.frame_set(i)
     #obj = bpy.data.objects['plane']
     bm.from_object( obj, depsgraph )
     for j,v in enumerate(bm.verts):
         #world_mat = obj.matrix_world
         #v = obj.matrix_world[0] * v.co  
-        outfile.write( "vert:"+str(j)+","+str(obj.matrix_world[0][3]*v.co.x) + "," + str(obj.matrix_world[1][3]*v.co.y) + "," + str(obj.matrix_world[2][3]*v.co.z)+ "," )
+        outfile.write( str(j)+","+str(obj.matrix_world[0][3]*v.co.x) + "," + str(obj.matrix_world[1][3]*v.co.y) + "," + str(obj.matrix_world[2][3]*v.co.z) )
+        #outfile.write( str(j)+","+str(v.co.x) + "," + str(v.co.y) + "," + str(v.co.z) )
         outfile.write("\n")
-    outfile.write("\n")
     bm.free()
     bpy.context.view_layer.update()
     #print(obj.matrix_world[2][3])
 print(sphere.dimensions)
 outfile_y.write(str(sphere.matrix_world[0][3])+","+str(sphere.matrix_world[1][3])+","+str(sphere.matrix_world[2][3])+",")
-outfile_y.write(sphere.dimensions)
+outfile_y.write(str(sphere.dimensions.x)+","+str(sphere.dimensions.y)+","+str(sphere.dimensions.z)+",")
